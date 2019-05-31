@@ -22,10 +22,10 @@ int main() {
     SDL_Window *main_window;
     SDL_Init(SDL_INIT_VIDEO);
     main_window = SDL_CreateWindow(
-        "Title text",
+        "Powder Game 3",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        600,
+        1000,
         600,
         0
     );
