@@ -53,9 +53,18 @@ int main() {
     bool window_open = true;
     SDL_Event event;
 
-    /* TODO: put state info here */
+    CoordPair cursor;
+    cursor.x = 0;
+    cursor.y = 0;
 
+    AirCell air[40][100];
+    for (int y = 0; y < 40; ++y) {
+        for (int x = 0; x < 100; ++x) {
+            air[y][x].set_position(x * 10, y * 10);
+        }
+    }
     while (window_open) {
+        SDL_ShowCursor(SDL_DISABLE);
         SDL_SetRenderDrawColor(renderer, BLACK, 0);
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, METAL, 255);
@@ -72,6 +81,10 @@ int main() {
             255
         );
 
+        SDL_SetRenderDrawColor(renderer, RED, 255);
+        SDL_RenderDrawLine(renderer, cursor.x, cursor.y, cursor.x - 0xF, cursor.y + 0xF);
+        SDL_RenderDrawLine(renderer, cursor.x, cursor.y + 2, cursor.x, cursor.y);
+        SDL_RenderDrawLine(renderer, cursor.x - 2, cursor.y, cursor.x, cursor.y);
         SDL_RenderPresent(renderer);
 
         /* state modification goes here */
@@ -82,16 +95,17 @@ int main() {
                 window_open = false;
                 break;
             case SDL_MOUSEMOTION:
-                int mouse_x = event.motion.x;
-                int mouse_y = event.motion.y;
+                cursor.x = event.motion.x;
+                cursor.y = event.motion.y;
                 std::stringstream ss;
-                ss << "X: " << mouse_x << " Y: " << mouse_y;
+                ss << "X: " << cursor.x << " Y: " << cursor.y;
                 SDL_SetWindowTitle(main_window, ss.str().c_str());
                 break;
         }
     }
 
     /* if any heap memory was allocated, free it here */
+    SDL_ShowCursor(SDL_ENABLE);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(main_window);
     SDL_Quit();
