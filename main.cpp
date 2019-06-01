@@ -3,15 +3,22 @@
 // Compile with the following:
 // g++ main.cpp `pkg-config --cflags --libs sdl2`
 
+#ifndef SDL2_SDL_H
+#define SDL2_SDL_H
 #include <SDL2/SDL.h>
+#endif // SDL2_SDL_H
+
 #include <iostream>
-/* TODO: create some header files
-where I define the classes for particles. */
+#include <sstream>
+#include "djf-SDL-text.h"
+#include "air.hpp"
 
 #define RED    255, 0, 0
 #define YELLOW 255, 255, 0
 #define GREEN  0, 255, 70
 #define BLUE   32, 32, 255
+
+#define METAL  64, 64, 64
 
 #define WHITE  255, 255, 255
 #define GREY   128, 128, 128
@@ -51,7 +58,20 @@ int main() {
     while (window_open) {
         SDL_SetRenderDrawColor(renderer, BLACK, 0);
         SDL_RenderClear(renderer);
-        /* TODO: put some code here to show the menu bar. */
+        SDL_SetRenderDrawColor(renderer, METAL, 255);
+        SDL_Rect menu_bg {0, 400, 1000, 200};
+        SDL_RenderFillRect(renderer, &menu_bg);
+
+        render_string(
+            renderer,
+            350,
+            580,
+            "COPYRIGHT (C) 2019 BY DANTE FALZONE UNDER GNU GPL 3.0",
+            53,
+            BLACK,
+            255
+        );
+
         SDL_RenderPresent(renderer);
 
         /* state modification goes here */
@@ -61,7 +81,13 @@ int main() {
             case SDL_QUIT:
                 window_open = false;
                 break;
-            /* other cases go here */
+            case SDL_MOUSEMOTION:
+                int mouse_x = event.motion.x;
+                int mouse_y = event.motion.y;
+                std::stringstream ss;
+                ss << "X: " << mouse_x << " Y: " << mouse_y;
+                SDL_SetWindowTitle(main_window, ss.str().c_str());
+                break;
         }
     }
 
