@@ -1,4 +1,5 @@
-// As of 29 May 2019, all this does is show a large black window.
+// As of 1 June 2019, this shows a window with a cursor and a menubar.
+// The only thing in the menubar is a copyright & licensing notice.
 // I've only tested it on Linux; idk if it'll work on Windows/Mac.
 // Compile with the following:
 // g++ main.cpp `pkg-config --cflags --libs sdl2`
